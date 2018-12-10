@@ -1,41 +1,45 @@
-# Simple string program. Writes and updates strings.
-# Demo program for the I2C 16x2 Display from Ryanteck.uk
-# Created by Matthew Timmons-Brown for The Raspberry Pi Guy YouTube channel
-
-# Import necessary libraries for communication and display use
+# Imports
 import lcddriver
 import time
 from bs4 import BeautifulSoup
 import requests
+import sys
 
-
-# Load the driver and set it to "display"
-# If you use something from the driver library use the "display." prefix first
 display = lcddriver.lcd()
+
+# Search for digits on an string
+def searchForDigits(s):
+   return int(''.join(list(filter(str.isdigit, s))))
 
 try:    
     while True:
-        url = "https://socialblade.com/youtube/user/thegrefg"
+        url = sys.argv[1]
+        url_2 = sys.argv[2]
+
         headers = {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36'}
         response = requests.get(url, headers=headers)
         soup = BeautifulSoup(response.text,"lxml")
-        name = soup.findAll("span", {"id": "youtube-stats-header-subs"})
-        name_txt = int(''.join(list(filter(str.isdigit, name[0].text))))
-        print(name_txt)
-        print("Grefg ",name_txt)
-        s = "Grefg:  " + str(name_txt)
-        display.lcd_display_string(s, 1)
-        url2 = "https://socialblade.com/youtube/channel/UC8cO6QIqDJv1RdruiXpiQvA"
-        headers2 = {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36'}
-        response2 = requests.get(url2, headers=headers)
-        soup2 = BeautifulSoup(response2.text,"lxml")
-        name2 = soup2.findAll("span", {"id": "youtube-stats-header-subs"})
-        name_txt2 = int(''.join(list(filter(str.isdigit, name2[0].text))))
-        print("SpiuK:  ",name_txt2)
-        t = "SpiuK:    " + str(name_txt2)
-        display.lcd_display_string(t, 2)
+        subs_1 = soup.findAll("span", {"id": "youtube-stats-header-subs"})
 
+        response_2 = requests.get(url_2, headers=headers)
+        soup_2 = BeautifulSoup(response_2.text,"lxml")
+        subs_2 = soup_2.findAll("span", {"id": "youtube-stats-header-subs"})
+
+        subs_1_txt = searchForDigits(subs_1[0].text)
+        subs_2_txt = searchForDigits(subs_2[0].text)
+
+        print("name_1 ",subs_1_txt)
+        print("name_2:  ",subs_2_txt)
+
+        string_1 = "name1:  " + str(subs_1_txt)
+        string_2 = "name2:    " + str(name_txt2)
+
+        display.lcd_display_string(string_1, 1)
+        display.lcd_display_string(string_2, 2)
+
+        # Update every 15 seconds
         time.sleep(15)
+
 except KeyboardInterrupt: # If there is a KeyboardInterrupt (when you press ctrl+c), exit the program and cleanup
     display.lcd_clear()
     print("Cleaning up!")

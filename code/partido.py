@@ -43,6 +43,8 @@ try:
         display.long_string(names_str, 2)
         
         print(local,"-",visitante,"  minute: ",time)
+        
+        # Update every 15 seconds
         time.sleep(15)
 
 except KeyboardInterrupt:   
