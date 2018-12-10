@@ -13,9 +13,9 @@ display = lcddriver.lcd()
 
 try:
     print("Writing to display")
-    display.lcd_display_string("No time to waste", 1) # Write line of text to first line of display
+    display.lcd_display_string(str(time.strftime("%d/%m/%Y")), 1) # Write line of text to first line of display
     while True:
-        display.lcd_display_string(str(datetime.datetime.now().time()), 2) # Write just the time to the display
+        display.lcd_display_string(str(time.strftime("%H:%M:%S")), 2) # Write just the time to the display
         # Program then loops with no delay (Can be added with a time.sleep)
 
 except KeyboardInterrupt: # If there is a KeyboardInterrupt (when you press ctrl+c), exit the program and cleanup
