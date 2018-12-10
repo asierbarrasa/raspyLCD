@@ -116,3 +116,14 @@ class lcd:
    def lcd_clear(self):
       self.lcd_write(LCD_CLEARDISPLAY)
       self.lcd_write(LCD_RETURNHOME)
+      
+    def long_string(text = '', num_line = 1, num_cols = 20):
+        if(len(text) > num_cols):
+            self.lcd_display_string(text[:num_cols],num_line)
+            time.sleep(1)
+            for i in range(len(text) - num_cols + 1):
+                text_to_print = text[i:i+num_cols]
+                self.lcd_display_string(text_to_print,num_line)
+                time.sleep(0.4)
+        else:
+            self.lcd_display_string(text,num_line)

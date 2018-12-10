@@ -1,31 +1,12 @@
-# Import requests (to download the page)
+# Imports
 import requests
 import lcddriver
 import time
-
-
-# Load the driver and set it to "display"
-# If you use something from the driver library use the "display." prefix first
-display = lcddriver.lcd()
-
-# Import BeautifulSoup (to parse what we download)
 from bs4 import BeautifulSoup
 
-# Import Time (to add a delay between the times the scape runs)
-import time
-
+display = lcddriver.lcd()
 
 try:
-    def long_string(display, text = '', num_line = 1, num_cols = 20):
-        if(len(text) > num_cols):
-            display.lcd_display_string(text[:num_cols],num_line)
-            time.sleep(1)
-            for i in range(len(text) - num_cols + 1):
-                text_to_print = text[i:i+num_cols]
-                display.lcd_display_string(text_to_print,num_line)
-                time.sleep(0.4)
-        else:
-            display.lcd_display_string(text,num_line)
     while True:
        #url = input("https://www.resultados-futbol.com/partido/X/X")
         url = "https://www.resultados-futbol.com/partido/Juventus-Fc/Internazionale"
@@ -44,7 +25,7 @@ try:
         y = name[0].text + " - " + name[1].text
         display.lcd_display_string(x, 1)
         #display.lcd_display_string(name[0].text,2)
-        long_string(display, y, 2)
+        display.long_string(display, y, 2)
         print(local,"-",visitante,"time: ",t)
         time.sleep(15)
 
